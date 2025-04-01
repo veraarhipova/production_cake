@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="text-center mb-4">Редактирование записи: {{ table_name }}</h1>
+
+<form method="POST">
+    {% for column in column_names %}
+        {% if column not in ['id_order', 'id_worker'] %} <!-- Не показываем поля с id_order и id_worker -->
+            <div class="mb-3">
+                <label for="{{ column }}" class="form-label">{{ column }}</label>
+                <input type="text" class="form-control" id="{{ column }}" name="{{ column }}" value="{{ data[column] }}">
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    <div class="text-center mt-4">
+        <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+        <a href="{{ url_for('admin_table_view', table_name=table_name) }}" class="btn btn-secondary ml-2">Отмена</a>
+    </div>
+</form>
+{% endblock %}

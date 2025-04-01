@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2 class="text-center mb-4">Мои заказы</h2>
+
+    {% if orders %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Номер заказа</th>
+                    <th>Статус</th>
+                    <th>Дата заказа</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                    <tr>
+                        <td>{{ order.id_order }}</td>
+                        <td>{{ order.order_status }}</td>
+                        <td>{{ order.order_date }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>У вас нет заказов.</p>
+    {% endif %}
+
+    <div class="text-center mt-4">
+        <a href="{{ url_for('home') }}" class="btn btn-primary">Вернуться на главную страницу</a>
+    </div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2 class="text-center mb-4">Корзина</h2>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Товар</th>
+                <th>Цена за единицу</th>
+                <th>Количество</th>
+                <th>Общая цена</th>
+                <th>Действие</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cake_id, details in cake_details.items() %}
+                <tr>
+                    <td>{{ details.name }}</td>
+                    <td>{{ details.price }} руб.</td>
+                    <td>
+                        <form action="{{ url_for('update_cart') }}" method="POST" class="form-inline">
+                            <input type="hidden" name="cake_id" value="{{ cake_id }}">
+                            <input type="number" name="quantity" value="{{ details.quantity }}" min="1" class="form-control">
+                            <button type="submit" class="btn btn-primary ml-2">Обновить</button>
+                        </form>
+                    </td>
+                    <td>{{ details.total }} руб.</td>
+                    <td>
+                        <form action="{{ url_for('update_cart') }}" method="POST">
+                            <input type="hidden" name="cake_id" value="{{ cake_id }}">
+                            <input type="hidden" name="quantity" value="0">
+                            <button type="submit" class="btn btn-danger">Удалить</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between align-items-center mt-4">
+        <h3>Итого: {{ total_price }} руб.</h3>
+        <div>
+            <a href="{{ url_for('cakes') }}" class="btn btn-outline-secondary">Посмотреть еще торты</a>
+            <form action="{{ url_for('place_order') }}" method="POST" class="d-inline">
+                <button type="submit" class="btn btn-success">Оформить заказ</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

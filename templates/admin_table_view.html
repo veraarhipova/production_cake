@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Таблица: {{ table_name }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        table th {
+            background-color: #007bff;
+            color: white;
+        }
+        .form-inline {
+            display: flex;
+            gap: 10px;
+        }
+        .form-inline input {
+            padding: 5px;
+        }
+        .button {
+            display: inline-block;
+            padding: 5px 10px;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Таблица: {{ table_name }}</h1>
+        {% if data %}
+            <table>
+                <thead>
+                    <tr>
+                        {% for column in data[0].keys() %}
+                            <th>{{ column }}</th>
+                        {% endfor %}
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in data %}
+                        <tr>
+                            {% for value in row.values() %}
+                                <td>{{ value }}</td>
+                            {% endfor %}
+                            <td>
+                                <form method="POST" action="{{ url_for('delete_entry', table_name=table_name, entry_id=row['id']) }}" style="display:inline;">
+                                    <button class="button" type="submit">Удалить</button>
+                                </form>
+                                <form method="GET" action="{{ url_for('edit_entry', table_name=table_name, entry_id=row['id']) }}" style="display:inline;">
+                                    <button class="button">Редактировать</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Данных нет</p>
+        {% endif %}
+
+        <h3>Добавить новую запись</h3>
+        <form method="POST" action="{{ url_for('add_entry', table_name=table_name) }}" class="form-inline">
+            {% for column in columns %}
+                <input type="text" name="{{ column }}" placeholder="{{ column }}">
+            {% endfor %}
+            <button class="button" type="submit">Добавить</button>
+        </form>
+        <a href="{{ url_for('admin_panel') }}" class="button">Вернуться ко всем таблицам</a>
+    </div>
+</body>
+</html>

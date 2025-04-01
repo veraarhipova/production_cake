@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2 class="text-center mb-4">Меню</h2>
+
+    <!-- Форма для поиска, сортировки и фильтрации -->
+    <form method="GET" action="{{ url_for('cakes') }}" class="mb-4">
+        <div class="row">
+            <div class="col-md-4">
+                <label for="search">Поиск:</label>
+                <input type="text" name="search" id="search" class="form-control" value="{{ search_query }}" placeholder="Введите название торта">
+            </div>
+
+            <div class="col-md-3">
+                <label for="sort">Сортировать по:</label>
+                <select name="sort" id="sort" class="form-control">
+                    <option value="price" {% if sort_option =='price' %}selected{% endif %}>Цене</option>
+                    <option value="calorie" {% if sort_option =='calorie' %}selected{% endif %}>Калорийности</option>
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <label for="order">Порядок:</label>
+                <select name="order" id="order" class="form-control">
+                    <option value="asc" {% if order =='asc' %}selected{% endif %}>По возрастанию</option>
+                    <option value="desc" {% if order =='desc' %}selected{% endif %}>По убыванию</option>
+                </select>
+            </div>
+
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">Применить</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Список тортов -->
+    <div class="row">
+        {% for cake in cakes %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{{ url_for('static', filename=cake.image_path) }}"
+                         class="card-img-top"
+                         alt="{{ cake.cake_name }}"
+                         style="object-fit: cover; height: 200px;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ cake.cake_name }}</h5>
+                        <p class="card-text">{{ cake.cake_calorie }} калорий/100г</p>
+                        <p class="card-text">{{ cake.cake_price }} ₽</p>
+                        <form action="{{ url_for('add_to_cart') }}" method="POST">
+                            <input type="hidden" name="cake_id" value="{{ cake.id_cake }}">
+                            <input type="number" name="quantity" value="1" min="1" class="form-control mb-2">
+                            <button type="submit" class="btn btn-primary w-100">Добавить в корзину</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Пагинация -->
+    <nav class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if page > 1 %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('cakes', page=page-1, sort=sort_option, order=order, search=search_query) }}">Предыдущая</a>
+                </li>
+            {% endif %}
+
+            {% for p in range(1, total_pages + 1) %}
+                <li class="page-item {% if p == page %}active{% endif %}">
+                    <a class="page-link" href="{{ url_for('cakes', page=p, sort=sort_option, order=order, search=search_query) }}">{{ p }}</a>
+                </li>
+            {% endfor %}
+
+            {% if page < total_pages %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('cakes', page=page+1, sort=sort_option, order=order, search=search_query) }}">Следующая</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <div class="text-center mt-4">
+        <a href="{{ url_for('cart') }}" class="btn btn-success">Перейти в корзину</a>
+    </div>
+{% endblock %}

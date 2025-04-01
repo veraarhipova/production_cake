@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Orders</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Search Orders</h1>
+    <form method="POST">
+        <label for="query">Search for order details:</label><br>
+        <input type="text" id="query" name="query" required><br><br>
+        <input type="submit" value="Search">
+    </form>
+
+    {% if results %}
+    <h2>Search Results</h2>
+    <table border="1">
+        <tr>
+            <th>Order ID</th>
+            <th>Details</th>
+            <th>Client ID</th>
+        </tr>
+        {% for result in results %}
+        <tr>
+            <td>{{ result[0] }}</td>
+            <td>{{ result[1] }}</td>
+            <td>{{ result[2] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
+    <a href="{{ url_for('index') }}">Back to Home</a>
+</body>
+</html>
