@@ -76,7 +76,27 @@
 
 #### Шаги для запуска проекта:
 
-1. Скачайте репозиторий: git clone https://github.com/lkomarova04/coworking_kr.git
-Настройте базу данных
-Обновите файл application.properties вашими данными
-Запустите проект через вашу IDE
+1. Скачайте репозиторий: https://github.com/veraarhipova/production_cake/tree/master  <br>
+2. Настройте базу данных <br>
+
+Создайте базу данных в MySQL:
+#### **SQL**  
+```markdown
+CREATE DATABASE production_cake;
+```
+
+Обновите данные для доступа к вашей базе данных:
+#### **SQL**  
+```markdown
+DB_CONFIG = {
+    'host': 'localhost',
+    'user': 'root',
+    'password': 'ВАШ_ПАРОЛЬ',
+    'database': 'production_cake'
+}
+```
+
+3. Запустите проект <br>
+4. Перейдите в браузере на http://127.0.0.1:5002 
+
+
