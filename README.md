@@ -86,7 +86,7 @@ CREATE DATABASE production_cake;
 ```
 
 Обновите данные для доступа к вашей базе данных:
-#### **SQL**  
+#### **python**  
 ```markdown
 DB_CONFIG = {
     'host': 'localhost',
